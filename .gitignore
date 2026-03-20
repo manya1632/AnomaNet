@@ -1,0 +1,156 @@
+
+# ============================================================
+# SECRETS — never commit these
+# ============================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+secrets/
+
+# ============================================================
+# ML
+# ============================================================
+
+# Virtual environment
+ml/.venv/
+ml/venv/
+ml/env/
+
+# Generated dataset (large parquet files — regenerate with simulator)
+ml/data/
+data/
+
+# Trained model artifacts (tracked by MLflow, not git)
+ml/core/models/
+ml/**/*.pt
+ml/**/*.pkl
+ml/**/*.joblib
+ml/**/*.bin
+
+# MLflow local runs (if running mlflow locally without docker)
+mlruns/
+mlartifacts/
+
+# Python cache
+ml/**/__pycache__/
+ml/**/*.pyc
+ml/**/*.pyo
+ml/**/*.pyd
+**/__pycache__/
+**/*.pyc
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+ml/.pytest_cache/
+
+# ============================================================
+# BACKEND 
+# ============================================================
+
+# Maven build output
+backend/**/target/
+backend/**/*.class
+
+# Spring Boot packaged jars (built, not committed)
+backend/**/*.jar
+backend/**/*.war
+!backend/**/wrapper/*.jar   # Maven wrapper jar is committed
+
+# IDE project files
+backend/**/.idea/
+backend/**/*.iml
+
+# ============================================================
+# FRONTEND 
+# ============================================================
+
+# Node modules (always regenerate with npm install)
+frontend/node_modules/
+frontend/**/node_modules/
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+
+# npm / yarn / pnpm
+frontend/.npm/
+frontend/.yarn/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js env files (use .env.example, not .env.local)
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# TypeScript build info
+frontend/**/*.tsbuildinfo
+
+# ============================================================
+# DOCKER / INFRA
+# ============================================================
+
+# Docker volumes (data lives in named volumes, not git)
+postgres_data/
+neo4j_data/
+redis_data/
+kafka_data/
+mlflow_data/
+
+# ============================================================
+# EDITORS & OS
+# ============================================================
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# IntelliJ / PyCharm
+.idea/
+*.iml
+*.iws
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+**/.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ============================================================
+# LOGS & TEMP
+# ============================================================
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+
+# ============================================================
+# DOCS BUILD OUTPUT (keep source, ignore rendered)
+# ============================================================
+docs/_build/
+docs/site/
