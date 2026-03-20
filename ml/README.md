@@ -1,5 +1,4 @@
 # AnomaNet — ML Layer
-**Owner: Muskan | AI/ML Engineer**
 **Stack: Python 3.11 · NetworkX · XGBoost · Isolation Forest · Logistic Regression · PyTorch Geometric · FastAPI · Neo4j · Kafka · Redis · MLflow**
 
 ---
