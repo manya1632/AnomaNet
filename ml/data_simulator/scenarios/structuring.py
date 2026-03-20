@@ -28,10 +28,10 @@ import random
 import uuid
 from datetime import datetime, timedelta
 
-from data_simulator.simulator import (
+from data_simulator.models import (
     Account, Customer, Transaction,
-    _new_uuid, _new_account_number, _random_ifsc,
-    _make_customer, _make_account, SIM_END,
+    new_uuid, new_account_number, random_ifsc,
+    make_customer, make_account, SIM_END,
 )
 
 # CTR threshold tiers in INR
@@ -69,18 +69,18 @@ def generate_structuring_cluster(
     all_customers: list[Customer]    = []
 
     for _ in range(n_clusters):
-        cluster_id = _new_uuid()
+        cluster_id = new_uuid()
         threshold  = random.choices(CTR_THRESHOLDS, weights=THRESHOLD_WEIGHTS)[0]
         n_deposits = random.randint(3, 7)
 
         # The structuring account — low/medium KYC
         tier = random.choice(["LOW", "MEDIUM"])
-        cust = _make_customer(kyc_tier=tier)
+        cust = make_customer(kyc_tier=tier)
         # Make declared income much lower than what they're depositing
         cust.declared_monthly_income = round(
             random.uniform(15_000, 60_000), 2
         )
-        acct = _make_account(cust, open_days_ago=random.randint(180, 1095))
+        acct = make_account(cust, open_days_ago=random.randint(180, 1095))
         all_accounts.append(acct)
         all_customers.append(cust)
 
@@ -89,7 +89,7 @@ def generate_structuring_cluster(
         branch_pool = [acct.branch_id]
         if is_smurfing:
             for _ in range(n_deposits - 1):
-                branch_pool.append(_random_ifsc())
+                branch_pool.append(random_ifsc())
 
         # Window: random start day, deposits spread within 7 days
         days_ago     = random.randint(7, 89)
@@ -121,7 +121,7 @@ def generate_structuring_cluster(
             }
 
             deposit_tx = Transaction(
-                id=_new_uuid(),
+                id=new_uuid(),
                 reference_number=f"CASH{deposit_time.strftime('%Y%m%d')}{random.randint(100000,999999)}",
                 source_account_id=acct.id,
                 dest_account_id=pooling_dest.id,

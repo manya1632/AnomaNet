@@ -22,20 +22,20 @@ import random
 import uuid
 from datetime import datetime, timedelta
 
-from data_simulator.simulator import (
+from data_simulator.models import (
     Account, Customer, Transaction,
-    _new_uuid, _new_account_number, _random_ifsc,
-    _make_customer, _make_account, SIM_END,
+    new_uuid, new_account_number, random_ifsc,
+    make_customer, make_account, SIM_END,
 )
 
 
 def _make_dormant_account() -> tuple[Account, Customer]:
     """Create an account that has been dormant for 14–24 months."""
     # Low KYC — these are often identity-theft victims or shell accounts
-    cust = _make_customer(kyc_tier=random.choice(["LOW", "MEDIUM"]))
+    cust = make_customer(kyc_tier=random.choice(["LOW", "MEDIUM"]))
     # Historical average for this account should be tiny (₹5k–₹50k)
     cust.declared_monthly_income = round(random.uniform(15_000, 45_000), 2)
-    acct = _make_account(cust, force_dormant=True)
+    acct = make_account(cust, force_dormant=True)
     return acct, cust
 
 
@@ -57,7 +57,7 @@ def generate_dormant_cluster(
     all_customers: list[Customer]    = []
 
     for _ in range(n_clusters):
-        cluster_id = _new_uuid()
+        cluster_id = new_uuid()
 
         dormant_acct, dormant_cust = _make_dormant_account()
         all_accounts.append(dormant_acct)
@@ -68,8 +68,8 @@ def generate_dormant_cluster(
         dest_accounts  = []
         dest_customers = []
         for _ in range(n_dest):
-            d_cust = _make_customer(kyc_tier="LOW")
-            d_acct = _make_account(d_cust, open_days_ago=random.randint(30, 365))
+            d_cust = make_customer(kyc_tier="LOW")
+            d_acct = make_account(d_cust, open_days_ago=random.randint(30, 365))
             dest_accounts.append(d_acct)
             dest_customers.append(d_cust)
         all_accounts.extend(dest_accounts)
@@ -96,10 +96,10 @@ def generate_dormant_cluster(
         # ── Inbound transfer (reactivation event) ────────────────────────────
         inbound_channel = random.choice(["NEFT", "RTGS", "SWIFT"])
         inbound_tx = Transaction(
-            id=_new_uuid(),
+            id=new_uuid(),
             reference_number=f"{inbound_channel}{activation_dt.strftime('%Y%m%d')}{random.randint(100000,999999)}",
             # Source: random external account — not in our modelled universe (unknown origin)
-            source_account_id=_new_account_number(),
+            source_account_id=new_account_number(),
             dest_account_id=dormant_acct.id,
             amount=inbound_amount,
             channel=inbound_channel,
@@ -144,7 +144,7 @@ def generate_dormant_cluster(
             out_channel = random.choice(["NEFT", "RTGS", "IMPS"])
 
             outbound_tx = Transaction(
-                id=_new_uuid(),
+                id=new_uuid(),
                 reference_number=f"{out_channel}{out_time.strftime('%Y%m%d')}{random.randint(100000,999999)}",
                 source_account_id=dormant_acct.id,
                 dest_account_id=dest_acct.id,

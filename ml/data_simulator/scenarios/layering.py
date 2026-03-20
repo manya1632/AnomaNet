@@ -24,10 +24,10 @@ from typing import Optional
 
 import numpy as np
 
-from data_simulator.simulator import (
+from data_simulator.models import (
     Account, Customer, Transaction,
-    _new_uuid, _new_account_number, _random_ifsc,
-    _make_customer, _make_account,
+    new_uuid, new_account_number, random_ifsc,
+    make_customer, make_account,
     IFSC_PREFIXES, SIM_END,
 )
 
@@ -48,20 +48,20 @@ def _make_layering_accounts(n_mules: int) -> tuple[list[Account], list[Customer]
     customers = []
 
     # Source account — medium KYC to look legitimate
-    src_cust = _make_customer(kyc_tier="MEDIUM")
-    src_acct = _make_account(src_cust, open_days_ago=random.randint(180, 730))
-    src_acct.branch_id = _random_ifsc()
+    src_cust = make_customer(kyc_tier="MEDIUM")
+    src_acct = make_account(src_cust, open_days_ago=random.randint(180, 730))
+    src_acct.branch_id = random_ifsc()
     customers.append(src_cust)
     accounts.append(src_acct)
 
     # Mule accounts — low KYC, different branches from source and from each other
     used_branches = {src_acct.branch_id}
     for _ in range(n_mules):
-        mule_cust = _make_customer(kyc_tier="LOW")
-        mule_acct = _make_account(mule_cust, open_days_ago=random.randint(30, 180))
+        mule_cust = make_customer(kyc_tier="LOW")
+        mule_acct = make_account(mule_cust, open_days_ago=random.randint(30, 180))
         # Force a branch not yet used in this cluster
         while mule_acct.branch_id in used_branches:
-            mule_acct.branch_id = _random_ifsc()
+            mule_acct.branch_id = random_ifsc()
         used_branches.add(mule_acct.branch_id)
         customers.append(mule_cust)
         accounts.append(mule_acct)
@@ -84,7 +84,7 @@ def generate_layering_cluster(
     all_customers: list[Customer]   = []
 
     for _ in range(n_clusters):
-        cluster_id = _new_uuid()
+        cluster_id = new_uuid()
         n_mules    = random.randint(5, 8)
 
         accounts, customers = _make_layering_accounts(n_mules)
@@ -105,7 +105,7 @@ def generate_layering_cluster(
         # ── Step 1: initial deposit into source account ──────────────────────
         initial_channel = random.choice(["NEFT", "RTGS", "SWIFT"])
         initial_tx = Transaction(
-            id=_new_uuid(),
+            id=new_uuid(),
             reference_number=f"{initial_channel}{anchor_dt.strftime('%Y%m%d')}{random.randint(100000,999999)}",
             source_account_id=random.choice(shared_pool).id,  # unknown external origin
             dest_account_id=src_acct.id,
@@ -136,7 +136,7 @@ def generate_layering_cluster(
             fan_time   = fan_out_start + fan_offset
 
             fan_tx = Transaction(
-                id=_new_uuid(),
+                id=new_uuid(),
                 reference_number=f"IMPS{fan_time.strftime('%Y%m%d')}{random.randint(100000,999999)}",
                 source_account_id=src_acct.id,
                 dest_account_id=mule.id,
@@ -162,7 +162,7 @@ def generate_layering_cluster(
 
             reconsolidate_dest = random.choice(shared_pool)
             forward_tx = Transaction(
-                id=_new_uuid(),
+                id=new_uuid(),
                 reference_number=f"NEFT{forward_time.strftime('%Y%m%d')}{random.randint(100000,999999)}",
                 source_account_id=mule.id,
                 dest_account_id=reconsolidate_dest.id,

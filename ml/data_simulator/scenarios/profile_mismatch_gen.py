@@ -26,10 +26,10 @@ import random
 import uuid
 from datetime import datetime, timedelta
 
-from data_simulator.simulator import (
+from data_simulator.models import (
     Account, Customer, Transaction,
-    _new_uuid, _new_account_number, _random_ifsc,
-    _make_customer, _make_account, SIM_END,
+    new_uuid, new_account_number, random_ifsc,
+    make_customer, make_account, SIM_END,
 )
 
 
@@ -40,14 +40,14 @@ def _make_mismatch_account() -> tuple[Account, Customer, list[Transaction]]:
       - Months of small, clean historical transactions (baseline)
     Returns (account, customer, historical_clean_txns).
     """
-    cust = _make_customer(kyc_tier="LOW")
+    cust = make_customer(kyc_tier="LOW")
     # Force a very low declared income
     cust.declared_monthly_income = round(random.uniform(20_000, 50_000), 2)
     cust.occupation = random.choice([
         "Kirana Shop Owner", "Vegetable Vendor", "Auto Driver",
         "Daily Wage Worker", "Retired Government Pensioner",
     ])
-    acct = _make_account(cust, open_days_ago=random.randint(365, 1825))  # 1–5 year old account
+    acct = make_account(cust, open_days_ago=random.randint(365, 1825))  # 1–5 year old account
     acct.account_type = "SAVINGS"  # rural/retail savings account
     acct.kyc_risk_tier = "LOW"
     acct.declared_monthly_income = cust.declared_monthly_income
@@ -65,10 +65,10 @@ def _make_mismatch_account() -> tuple[Account, Customer, list[Transaction]]:
             )
             amount = round(random.uniform(500, cust.declared_monthly_income * 0.3), 2)
             htx = Transaction(
-                id=_new_uuid(),
+                id=new_uuid(),
                 reference_number=f"UPI{tx_time.strftime('%Y%m%d')}{random.randint(100000,999999)}",
                 source_account_id=acct.id,
-                dest_account_id=_new_account_number(),   # local grocery, utility, etc.
+                dest_account_id=new_account_number(),   # local grocery, utility, etc.
                 amount=amount,
                 channel="UPI",
                 initiated_at=tx_time,
@@ -102,7 +102,7 @@ def generate_profile_mismatch_cluster(
     all_customers: list[Customer]    = []
 
     for _ in range(n_clusters):
-        cluster_id = _new_uuid()
+        cluster_id = new_uuid()
 
         acct, cust, historical_txns = _make_mismatch_account()
         all_accounts.append(acct)
@@ -153,10 +153,10 @@ def generate_profile_mismatch_cluster(
                 meta["utr"] = f"UTR{random.randint(10**13, 10**14-1)}"
 
             burst_tx = Transaction(
-                id=_new_uuid(),
+                id=new_uuid(),
                 reference_number=f"{channel}{tx_time.strftime('%Y%m%d')}{random.randint(100000,999999)}",
                 # Inbound: suspicious foreign or corporate accounts
-                source_account_id=_new_account_number(),
+                source_account_id=new_account_number(),
                 dest_account_id=acct.id,
                 amount=amount,
                 channel=channel,

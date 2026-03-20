@@ -23,10 +23,10 @@ import random
 import uuid
 from datetime import datetime, timedelta
 
-from data_simulator.simulator import (
+from data_simulator.models import (
     Account, Customer, Transaction,
-    _new_uuid, _new_account_number, _random_ifsc,
-    _make_customer, _make_account, SIM_END,
+    new_uuid, new_account_number, random_ifsc,
+    make_customer, make_account, SIM_END,
 )
 
 
@@ -42,10 +42,10 @@ def _make_circular_ring(length: int) -> tuple[list[Account], list[Customer]]:
     for i in range(length):
         # Mix KYC tiers: first node medium, others random low/medium
         tier = "MEDIUM" if i == 0 else random.choice(["LOW", "MEDIUM"])
-        cust = _make_customer(kyc_tier=tier)
-        acct = _make_account(cust, open_days_ago=random.randint(90, 1095))
+        cust = make_customer(kyc_tier=tier)
+        acct = make_account(cust, open_days_ago=random.randint(90, 1095))
         while acct.branch_id in used_branches:
-            acct.branch_id = _random_ifsc()
+            acct.branch_id = random_ifsc()
         used_branches.add(acct.branch_id)
         customers.append(cust)
         accounts.append(acct)
@@ -68,7 +68,7 @@ def generate_circular_cluster(
     all_customers: list[Customer]    = []
 
     for _ in range(n_clusters):
-        cluster_id  = _new_uuid()
+        cluster_id  = new_uuid()
         ring_length = random.randint(2, 7)
 
         accounts, customers = _make_circular_ring(ring_length)
@@ -120,7 +120,7 @@ def generate_circular_cluster(
                 meta["upi_txn_id"] = f"UPI{random.randint(10**15, 10**16-1)}"
 
             txn = Transaction(
-                id=_new_uuid(),
+                id=new_uuid(),
                 reference_number=f"{channel}{leg_time.strftime('%Y%m%d')}{random.randint(100000,999999)}",
                 source_account_id=src_acct.id,
                 dest_account_id=dst_acct.id,
