@@ -154,10 +154,11 @@ def _apply_isolation_forest(features: dict) -> float:
         X = _build_feature_vector(features)
         # decision_function: more negative = more anomalous
         raw_score = model.decision_function(X)[0]
-        # Normalise: typical range is roughly -0.5 to 0.5
-        # Map to [0, 1] where 1 = most anomalous
+        threshold = getattr(model, '_custom_threshold', 0.5)
         normalised = float(np.clip(0.5 - raw_score, 0.0, 1.0))
-        return normalised
+        # Only return a meaningful score if anomaly score exceeds threshold
+        return normalised if (-raw_score) >= threshold else normalised * 0.3
+        
     except Exception as e:
         log.error("Isolation Forest inference failed: %s", e)
         return 0.0
