@@ -1,0 +1,29 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: auth-service
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5433/anomanet}
+    username: ${POSTGRES_USER:anomanet}
+    password: ${POSTGRES_PASSWORD:anomanet123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+  flyway:
+    enabled: false
+
+jwt:
+  secret: ${JWT_SECRET:3f4a8b2c1d9e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a}
+  expiration-ms: 86400000
+  refresh-expiration-ms: 604800000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
