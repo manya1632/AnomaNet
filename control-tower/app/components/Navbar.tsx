@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import { useSession } from "next-auth/react"; 
+import { useSession } from "next-auth/react"; 
 import LogoutButton from "./LogoutButton";
 import Link from "next/link";
 import { Menu, X } from "lucide-react"; 
@@ -10,7 +10,7 @@ import { Menu, X } from "lucide-react";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
-//   const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
 
   const handleLoginClick = () => {
     router.push("/login");
@@ -47,11 +47,11 @@ const Navbar = () => {
 
         {/* CENTER: Navigation Links (Hidden on mobile, flex on desktop) */}
         <div className="hidden md:flex gap-8 text-gray-400 text-sm font-medium items-center">
-          {/* <NavContent session={session} /> */}
+          <NavContent session={session} />
         </div>
 
         {/* RIGHT: Auth Section (Always visible) */}
-        {/* <div className="flex items-center">
+        <div className="flex items-center">
           {status === "loading" ? (
             <div className="h-8 w-20 bg-gray-800 animate-pulse rounded-full" />
           ) : session ? (
@@ -69,13 +69,13 @@ const Navbar = () => {
               Login
             </button>
           )}
-        </div> */}
+        </div>
       </div>
 
       {/* MOBILE DROPDOWN (Visible only when isMenuOpen is true) */}
       {isMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-[#1A1A1A] border-b border-gray-800 flex flex-col p-6 gap-6 md:hidden animate-in slide-in-from-top-2 duration-200">
-          {/* <NavContent session={session} onLinkClick={() => setIsMenuOpen(false)} /> */}
+          <NavContent session={session} onLinkClick={() => setIsMenuOpen(false)} />
         </div>
       )}
     </nav>
