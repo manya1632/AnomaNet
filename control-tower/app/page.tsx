@@ -27,15 +27,15 @@ export default function Page() {
             </div>
 
             <div className="pt-3 text-3xl font-helvitica-neue">
-              <h2>Welcome to MuleHunter</h2>
+              <h2>Welcome to AnomaNet</h2>
               <h2>Detecting Financial Fraud Before It Spreads</h2>
               <h3 className="text-[#CAFF33]">Fraud Networks</h3>
             </div>
 
             <div className="text-gray-500 max-w-2xl leading-relaxed">
-              MuleHunter is an intelligent fraud detection and visual analytics platform designed to identify mule accounts, collusive transaction rings, and anomalous financial behavior in large-scale payment ecosystems like UPI.
+              AnomaNet is an intelligent fraud detection and visual analytics platform designed to identify mule accounts, collusive transaction rings, and anomalous financial behavior in large-scale payment ecosystems like UPI.
               <br /><br />
-              By combining graph analytics, machine learning, and explainable AI, MuleHunter empowers investigators to detect, analyze, and act on financial crime with speed and confidence.
+              By combining graph analytics, machine learning, and explainable AI, AnomaNet empowers investigators to detect, analyze, and act on financial crime with speed and confidence.
             </div>
 
             <Link href="https://fraud-viz-latest.onrender.com/" target="_blank" rel="noopener noreferrer">
@@ -86,7 +86,7 @@ export default function Page() {
           <span className="text-2xl font-bold text-[#caff33]">Capabilities</span>
         </div>
         <div className="text-sm text-gray-600 max-w-2xl">
-          MuleHunter provides a unified intelligence layer for detecting, analyzing, and explaining financial fraud networks at scale.
+          AnomaNet provides a unified intelligence layer for detecting, analyzing, and explaining financial fraud networks at scale.
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-8 gap-6">
@@ -112,7 +112,7 @@ export default function Page() {
           <span className="text-2xl font-bold text-[#caff33]">Cases</span>
         </div>
         <div className="text-sm text-gray-600 max-w-2xl">
-          MuleHunter is built for investigators and institutions to uncover mule networks, explain risk, and act on financial fraud with confidence.
+          AnomaNet is built for investigators and institutions to uncover mule networks, explain risk, and act on financial fraud with confidence.
         </div>
 
         {/* Section 1: Financial Institutions */}
@@ -126,7 +126,7 @@ export default function Page() {
 
           <div className="flex flex-col gap-4">
             <h2 className="text-lg font-bold">For Financial Institutions</h2>
-            <p className="text-sm text-gray-500 max-w-md">Banks and FinTechs leverage MuleHunter to reduce fraud losses and regulatory risk.</p>
+            <p className="text-sm text-gray-500 max-w-md">Banks and FinTechs leverage AnomaNet to reduce fraud losses and regulatory risk.</p>
             <div className="grid grid-cols-3 gap-4">
               <StatBlock value="78%" label="Faster detection" />
               <StatBlock value="63%" label="Less False Positives" />
@@ -139,7 +139,7 @@ export default function Page() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-48 items-center py-12 border-t border-gray-900/50">
           <div className="flex flex-col gap-4">
             <h2 className="text-lg font-bold">For Operational Benefits</h2>
-            <p className="text-sm text-gray-500 max-w-md">payment Platforms leverage MuleHunter to automate manual review workloads.</p>
+            <p className="text-sm text-gray-500 max-w-md">payment Platforms leverage AnomaNet to automate manual review workloads.</p>
             <div className="grid grid-cols-3 gap-4">
               <StatBlock value="65%" label="Less Workload" />
               <StatBlock value="70%" label="Faster Resolution" />

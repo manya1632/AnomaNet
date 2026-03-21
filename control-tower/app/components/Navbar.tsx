@@ -35,7 +35,7 @@ const Navbar = () => {
 
           <div className="flex items-center shrink-0">
             <Image 
-              src="/logo.png" 
+              src="/logo2.png" 
               alt="Logo" 
               width={130}
               height={35}

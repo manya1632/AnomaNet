@@ -27,7 +27,7 @@ export async function GET() {
   secret,
   {
     expiresIn: "10m",
-    issuer: "mulehunter-frontend",
+    issuer: "anomanet-frontend",
   }
 );
 
