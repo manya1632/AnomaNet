@@ -1,0 +1,19 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: case-service
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5433/anomanet}
+    username: ${POSTGRES_USER:anomanet}
+    password: ${POSTGRES_PASSWORD:anomanet123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+  flyway:
+    enabled: false
+
