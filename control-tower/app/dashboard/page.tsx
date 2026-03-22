@@ -13,6 +13,8 @@ import { Activity, Square,
   Terminal, Cpu, HardDrive, Database, Info, 
   Settings2, Flame, Loader2 
 } from "lucide-react";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 import dynamic from "next/dynamic";
 import NodeInspector from "../components/graph/NodeInspector";
@@ -603,13 +605,17 @@ export default function FraudDashboard() {
   };
 
   return (
-    <div className="bg-[#060606] text-white min-h-screen flex selection:bg-[#CAFF33] selection:text-black">
+  <div className="bg-[#060606] text-white min-h-screen flex flex-col">
+    <Navbar />
+    <div className="flex flex-1 overflow-hidden">
       <Sidebar active={active} setActive={setActive} />
-      <main className="flex-1 h-screen overflow-hidden">
+      <main className="flex-1 h-full overflow-hidden">
         <div className="w-full h-full px-6 py-6 flex flex-col">
           {renderSection()}
         </div>
       </main>
     </div>
-  );
+    <Footer />
+  </div>
+);
 }
